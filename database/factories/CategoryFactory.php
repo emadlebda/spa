@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class PostFactory extends Factory
+class CategoryFactory extends Factory
 {
-    protected $model = Post::class;
+    protected $model = Category::class;
 
     /**
      * Define the model's default state.
@@ -18,9 +18,7 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'title'      => $this->faker->word,
-            'post_text'  => $this->faker->text(500),
-            'category_id'=>rand(1,5),
+            'name'       => $this->faker->word,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

@@ -3,21 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PostResource;
-use App\Models\Post;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class PostsController extends Controller
+class CategoriesController extends Controller
 {
-
     public function index()
     {
-        $posts = Post::when(request('category_id', ''), function ($query) {
-                $query->where('category_id',request('category_id'));
-            }
-        )->paginate(10);
-
-        return PostResource::collection($posts);
+        return CategoryResource::collection(Category::all());
     }
 
     /**
@@ -35,11 +29,11 @@ class PostsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Post  $post
+     * @param  Category  $category
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Category $category)
     {
         //
     }
@@ -48,11 +42,11 @@ class PostsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  Request  $request
-     * @param  Post  $post
+     * @param  Category  $category
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Category $category)
     {
         //
     }
@@ -60,11 +54,11 @@ class PostsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Post  $post
+     * @param  Category  $category
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(Category $category)
     {
         //
     }
