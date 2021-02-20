@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Post;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
@@ -14,6 +15,7 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-         Post::factory()->count(10)->create();
+        Post::factory()->count(50)->create();
+        Post::factory()->count(50)->create(['created_at' => Carbon::yesterday(), 'updated_at' => Carbon::yesterday()]);
     }
 }

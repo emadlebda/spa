@@ -1876,12 +1876,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       posts: {},
       categories: {},
-      category_id: ''
+      category_id: '',
+      sort_field: 'created_at',
+      sort_direction: 'desc'
     };
   },
   mounted: function mounted() {
@@ -1902,9 +1916,19 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get('/api/posts?page=' + page + '&category_id=' + this.category_id).then(function (response) {
+      axios.get('/api/posts?page=' + page + '&sort_field=' + this.sort_field + '&sort_direction=' + this.sort_direction).then(function (response) {
         _this2.posts = response.data;
       });
+    },
+    change_sort: function change_sort(field) {
+      if (this.sort_field === field) {
+        this.sort_direction = this.sort_direction === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.sort_field = field;
+        this.sort_direction = 'asc';
+      }
+
+      this.getResults();
     }
   }
 });
@@ -38029,7 +38053,83 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("table", { staticClass: "table" }, [
-        _vm._m(0),
+        _c("thead", [
+          _c("tr", [
+            _c("th", [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.change_sort("title")
+                    }
+                  }
+                },
+                [_vm._v("Title")]
+              ),
+              _vm._v(" "),
+              this.sort_field === "title" && this.sort_direction === "asc"
+                ? _c("span", [_vm._v("↑")])
+                : _vm._e(),
+              _vm._v(" "),
+              this.sort_field === "title" && this.sort_direction === "desc"
+                ? _c("span", [_vm._v("↓")])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("th", [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.change_sort("post_text")
+                    }
+                  }
+                },
+                [_vm._v("Post Text")]
+              ),
+              _vm._v(" "),
+              this.sort_field === "post_text" && this.sort_direction === "asc"
+                ? _c("span", [_vm._v("↑")])
+                : _vm._e(),
+              _vm._v(" "),
+              this.sort_field === "post_text" && this.sort_direction === "desc"
+                ? _c("span", [_vm._v("↓")])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("th", [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.change_sort("created_at")
+                    }
+                  }
+                },
+                [_vm._v("Created Date")]
+              ),
+              _vm._v(" "),
+              this.sort_field === "created_at" && this.sort_direction === "asc"
+                ? _c("span", [_vm._v("↑")])
+                : _vm._e(),
+              _vm._v(" "),
+              this.sort_field === "created_at" && this.sort_direction === "desc"
+                ? _c("span", [_vm._v("↓")])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Actions")])
+          ])
+        ]),
         _vm._v(" "),
         _c(
           "tbody",
@@ -38056,24 +38156,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Body")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Created date")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
