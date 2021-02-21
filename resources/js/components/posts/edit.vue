@@ -30,7 +30,7 @@
             <input type="file" @change="select_file">
             <br/><br/>
 
-            <input :disabled="form_submitting" :value="form_submitting ? 'Saving post...' : 'Save post'"
+            <input :disabled="form_submitting" :value="form_submitting ? 'Updating post...' : 'Update post'"
                    class="btn btn-primary"
                    type="submit"/>
         </form>

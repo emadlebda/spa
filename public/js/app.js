@@ -43020,7 +43020,7 @@ var render = function() {
           staticClass: "btn btn-primary",
           attrs: { disabled: _vm.form_submitting, type: "submit" },
           domProps: {
-            value: _vm.form_submitting ? "Saving post..." : "Save post"
+            value: _vm.form_submitting ? "Updating post..." : "Update post"
           }
         })
       ]
