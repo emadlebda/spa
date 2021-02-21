@@ -16,36 +16,22 @@ class PostsController extends Controller
     public function index()
     {
         $sortField = request('sort_field', 'created_at');
-        if ( ! in_array($sortField, ['title', 'post_text', 'created_at'])) {
+        if (!in_array($sortField, ['title', 'post_text', 'created_at'])) {
             $sortField = 'created_at';
         }
         $sortDirection = request('sort_direction', 'desc');
-        if ( ! in_array($sortDirection, ['asc', 'desc'])) {
+        if (!in_array($sortDirection, ['asc', 'desc'])) {
             $sortDirection = 'desc';
         }
-
-        $filled = array_filter(
-            request()->only(
-                [
-                    'category_id',
-                    'title',
-                    'post_text',
-                    'created_at',
-                ]
-            )
-        );
-
-        $posts = Post::when(count($filled) > 0, function ($query) use ($filled) {
-                foreach ($filled as $column => $filled) {
-                    if ($column == 'category_id') {
-                        $query->where($column, $filled);
-                    } else {
-                        $query->where($column, 'LIKE', '%'.$filled.'%');
-                    }
-                }
-            }
-        )->orderBy($sortField, $sortDirection)->paginate(3);
-
+        $posts = Post::when(request('search', '') != '', function($query) {
+            $query->where(function ($q) {
+                $q->where('title', 'LIKE', '%' . request('search') . '%')
+                  ->orWhere('post_text', 'LIKE', '%' . request('search') . '%')
+                  ->orWhere('created_at', 'LIKE', '%' . request('search') . '%');
+            });
+        })->when(request('category_id', '') != '', function($query) {
+            $query->where('category_id', request('category_id'));
+        })->orderBy($sortField, $sortDirection)->paginate(3);
         return PostResource::collection($posts);
     }
 
