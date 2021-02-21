@@ -21,5 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('posts',[PostsController::class, 'index']);
+Route::apiResource('posts',PostsController::class);
 Route::get('categories',[CategoriesController::class, 'index']);
