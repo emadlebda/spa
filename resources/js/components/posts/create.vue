@@ -77,8 +77,8 @@ export default {
                 .catch(error => {
                     if (error.response.status === 422) {
                         this.errors = error.response.data.errors;
-                        this.form_submitting = false;
                     }
+                    this.form_submitting = false;
                 });
         }
     }
