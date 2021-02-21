@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CategoriesController extends Controller
 {
@@ -19,7 +20,7 @@ class CategoriesController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -31,7 +32,7 @@ class CategoriesController extends Controller
      *
      * @param  Category  $category
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Category $category)
     {
@@ -44,7 +45,7 @@ class CategoriesController extends Controller
      * @param  Request  $request
      * @param  Category  $category
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, Category $category)
     {
@@ -56,7 +57,7 @@ class CategoriesController extends Controller
      *
      * @param  Category  $category
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Category $category)
     {

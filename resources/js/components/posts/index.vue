@@ -8,7 +8,7 @@
                     {{ category.name }}
                 </option>
             </select>
-            <input type="text" class="form-control col-md-3" placeholder="Search (min 4 letters)" v-model="search">
+            <input v-model="search" class="form-control col-md-3" placeholder="Search (min 4 letters)" type="text">
         </div>
         <table class="table">
             <thead>
@@ -20,13 +20,17 @@
                 </th>
                 <th>
                     <a href="#" @click.prevent="change_sort('post_text')">Post Text</a>
-                    <span v-if="this.params.sort_field == 'post_text' && this.params.sort_direction == 'asc'">&uarr;</span>
-                    <span v-if="this.params.sort_field == 'post_text' && this.params.sort_direction == 'desc'">&darr;</span>
+                    <span
+                        v-if="this.params.sort_field == 'post_text' && this.params.sort_direction == 'asc'">&uarr;</span>
+                    <span
+                        v-if="this.params.sort_field == 'post_text' && this.params.sort_direction == 'desc'">&darr;</span>
                 </th>
                 <th>
                     <a href="#" @click.prevent="change_sort('created_at')">Created Date</a>
-                    <span v-if="this.params.sort_field == 'created_at' && this.params.sort_direction == 'asc'">&uarr;</span>
-                    <span v-if="this.params.sort_field == 'created_at' && this.params.sort_direction == 'desc'">&darr;</span>
+                    <span
+                        v-if="this.params.sort_field == 'created_at' && this.params.sort_direction == 'asc'">&uarr;</span>
+                    <span
+                        v-if="this.params.sort_field == 'created_at' && this.params.sort_direction == 'desc'">&darr;</span>
                 </th>
                 <th>Actions</th>
             </tr>
@@ -37,9 +41,10 @@
                 <td>{{ post.post_text.substring(0, 50) }}</td>
                 <td>{{ post.created_at }}</td>
                 <td>
-                    <router-link class="btn btn-info btn-sm"
-                                 :to="{ name: 'posts.edit', params: { id: post.id } }">Edit</router-link>
-                    <button @click="delete_post(post.id)" class="btn btn-danger btn-sm">Delete</button>
+                    <router-link :to="{ name: 'posts.edit', params: { id: post.id } }"
+                                 class="btn btn-info btn-sm">Edit
+                    </router-link>
+                    <button class="btn btn-danger btn-sm" @click="delete_post(post.id)">Delete</button>
                 </td>
             </tr>
             </tbody>
@@ -61,7 +66,7 @@ export default {
                 sort_direction: 'desc',
             },
             search: ''
-        }
+        };
     },
     mounted() {
         axios.get('/api/categories')
@@ -72,12 +77,12 @@ export default {
     },
     watch: {
         params: {
-            handler () {
+            handler() {
                 this.getResults();
             },
             deep: true
         },
-        search (val, old) {
+        search(val, old) {
             if (val.length >= 4 || old.length >= 4) {
                 this.getResults();
             }
@@ -121,11 +126,11 @@ export default {
                             this.$swal('Post deleted successfully');
                             this.getResults();
                         }).catch(error => {
-                        this.$swal({ icon: 'error', title: 'Error happened'});
+                        this.$swal({icon: 'error', title: 'Error happened'});
                     });
                 }
-            })
+            });
         }
     }
-}
+};
 </script>

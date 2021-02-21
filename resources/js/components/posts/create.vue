@@ -65,7 +65,7 @@ export default {
             this.form_submitting = true;
 
             let fields = new FormData();
-            for ( let key in this.fields ) {
+            for (let key in this.fields) {
                 fields.append(key, this.fields[key]);
             }
 

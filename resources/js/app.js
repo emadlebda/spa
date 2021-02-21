@@ -6,8 +6,9 @@ import VueSweetalert2 from "vue-sweetalert2";
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 
-import routes from './routes'
+import routes from './routes';
 import App from './components/App.vue';
+
 
 
 Vue.use(VueRouter);
