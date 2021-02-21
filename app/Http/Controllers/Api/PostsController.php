@@ -1,4 +1,5 @@
-<?php /** @noinspection ALL */
+<?php
+/** @noinspection ALL */
 
 namespace App\Http\Controllers\Api;
 
@@ -15,19 +16,35 @@ class PostsController extends Controller
     public function index()
     {
         $sortField = request('sort_field', 'created_at');
-        if (!in_array($sortField, ['title', 'post_text', 'created_at'])) {
+        if ( ! in_array($sortField, ['title', 'post_text', 'created_at'])) {
             $sortField = 'created_at';
         }
         $sortDirection = request('sort_direction', 'desc');
-        if (!in_array($sortDirection, ['asc', 'desc'])) {
+        if ( ! in_array($sortDirection, ['asc', 'desc'])) {
             $sortDirection = 'desc';
         }
-        $posts = Post::when(
-            request('category_id', ''),
-            function ($query) {
-                $query->where('category_id', request('category_id'));
+
+        $filled = array_filter(
+            request()->only(
+                [
+                    'category_id',
+                    'title',
+                    'post_text',
+                    'created_at',
+                ]
+            )
+        );
+
+        $posts = Post::when(count($filled) > 0, function ($query) use ($filled) {
+                foreach ($filled as $column => $filled) {
+                    if ($column == 'category_id') {
+                        $query->where($column, $filled);
+                    } else {
+                        $query->where($column, 'LIKE', '%'.$filled.'%');
+                    }
+                }
             }
-        )->orderBy($sortField, $sortDirection)->paginate(10);
+        )->orderBy($sortField, $sortDirection)->paginate(3);
 
         return PostResource::collection($posts);
     }
@@ -41,11 +58,12 @@ class PostsController extends Controller
      */
     public function store(StorePostRequest $request) : PostResource
     {
-        if ($request->hasFile('thumbnail')){
+        if ($request->hasFile('thumbnail')) {
             $fileName = $request->thumbnail->getClientOriginalName();
             info($fileName);
         }
         $post = Post::create($request->validated());
+
         return new PostResource($post);
     }
 
@@ -72,6 +90,7 @@ class PostsController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         $post->update($request->validated());
+
         return new PostResource($post);
     }
 
@@ -86,6 +105,6 @@ class PostsController extends Controller
     {
         $post->delete();
 
-        return  response()->noContent();
+        return response()->noContent();
     }
 }
