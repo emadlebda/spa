@@ -5,14 +5,14 @@
             <br/>
             <input v-model="fields.title" class="form-control" type="text"/>
             <div v-if="errors && errors.title" class="alert alert-danger">
-                {{errors.title[0]}}
+                {{ errors.title[0] }}
             </div>
             <br/>
             Post text:
             <br/>
             <textarea v-model="fields.post_text" class="form-control" rows="10"></textarea>
             <div v-if="errors && errors.post_text" class="alert alert-danger">
-                {{errors.post_text[0]}}
+                {{ errors.post_text[0] }}
             </div>
             <br/>
             Category:
@@ -22,10 +22,11 @@
                 </option>
             </select>
             <div v-if="errors && errors.category_id" class="alert alert-danger">
-                {{errors.category_id[0]}}
+                {{ errors.category_id[0] }}
             </div>
             <br/>
-            <input class="btn btn-primary" type="submit" value="Save post"/>
+            <input :disabled="form_submitting" :value="form_submitting ? 'Saving Post...' : 'Save Post'" class="btn btn-primary"
+                   type="submit"/>
         </form>
     </div>
 </template>
@@ -41,6 +42,7 @@ export default {
                 category_id: ''
             },
             errors: {},
+            form_submitting: false,
         };
     },
     mounted() {
@@ -51,15 +53,17 @@ export default {
     },
     methods: {
         submit_form() {
+            this.form_submitting = true;
             axios.post('api/posts', this.fields)
                 .then(response => {
                     this.$router.push('/');
+                    this.form_submitting = false;
                 })
                 .catch(error => {
                     if (error.response.status === 422) {
                         this.errors = error.response.data.errors;
+                        this.form_submitting = false;
                     }
-
                 });
         }
     }
