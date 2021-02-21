@@ -2,36 +2,37 @@
     <div>
         <form @submit.prevent="submit_form">
             Post title:
-            <br />
-            <input type="text" v-model="fields.title" class="form-control" />
-            <div class="alert alert-danger" v-if="errors && errors.title">
+            <br/>
+            <input v-model="fields.title" class="form-control" type="text"/>
+            <div v-if="errors && errors.title" class="alert alert-danger">
                 {{ errors.title[0] }}
             </div>
-            <br />
+            <br/>
             Post text:
-            <br />
-            <textarea rows="10" class="form-control" v-model="fields.post_text"></textarea>
-            <div class="alert alert-danger" v-if="errors && errors.post_text">
+            <br/>
+            <textarea v-model="fields.post_text" class="form-control" rows="10"></textarea>
+            <div v-if="errors && errors.post_text" class="alert alert-danger">
                 {{ errors.post_text[0] }}
             </div>
-            <br />
+            <br/>
             Category:
-            <select class="form-control" v-model="fields.category_id">
+            <select v-model="fields.category_id" class="form-control">
                 <option v-for="category in categories"
-                        :value="category.id">{{ category.name }}</option>
+                        :value="category.id">{{ category.name }}
+                </option>
             </select>
-            <div class="alert alert-danger" v-if="errors && errors.category_id">
+            <div v-if="errors && errors.category_id" class="alert alert-danger">
                 {{ errors.category_id[0] }}
             </div>
-            <br />
+            <br/>
             Thumbnail:
-            <br />
+            <br/>
             <input type="file" @change="select_file">
-            <br /><br />
+            <br/><br/>
 
-            <input type="submit" class="btn btn-primary"
-                   :value="form_submitting ? 'Saving post...' : 'Save post'"
-                   :disabled="form_submitting" />
+            <input :disabled="form_submitting" :value="form_submitting ? 'Saving post...' : 'Save post'"
+                   class="btn btn-primary"
+                   type="submit"/>
         </form>
     </div>
 </template>
@@ -49,7 +50,7 @@ export default {
             },
             errors: {},
             form_submitting: false
-        }
+        };
     },
     mounted() {
         axios.get('/api/categories')
@@ -69,17 +70,18 @@ export default {
             this.form_submitting = true;
             axios.put('/api/posts/' + this.$route.params.id, this.fields)
                 .then(response => {
-                    // this.$swal('Post updated successfully');
+                    this.$swal('Post updated successfully');
                     this.$router.push('/');
                     this.form_submitting = false;
-                }).catch(error => {
-                // this.$swal({ icon: 'error', title: 'Error happened'});
-                if (error.response.status === 422) {
-                    this.errors = error.response.data.errors;
-                }
-                this.form_submitting = false;
-            });
+                })
+                .catch(error => {
+                    this.$swal({icon: 'error', title: 'Error happened'});
+                    if (error.response.status === 422) {
+                        this.errors = error.response.data.errors;
+                    }
+                    this.form_submitting = false;
+                });
         }
     }
-}
+};
 </script>

@@ -33,7 +33,10 @@
                 <td>{{ post.post_text.substring(0, 50) }}</td>
                 <td>{{ post.created_at }}</td>
                 <td>
-                    <router-link :to="{name : 'posts.edit' , params: { id : post.id }}">Edit</router-link>
+                    <router-link :to="{name : 'posts.edit' , params: { id : post.id }}" class="btn btn-info btn-sm">
+                        Edit
+                    </router-link>
+                    <button class="btn btn-danger btn-sm" @click="delete_post(post.id)">Delete</button>
                 </td>
             </tr>
             </tbody>
@@ -74,7 +77,7 @@ export default {
                     this.posts = response.data;
                 });
         },
-        change_sort: function change_sort(field) {
+        change_sort(field) {
             if (this.sort_field === field) {
                 this.sort_direction = this.sort_direction === 'asc' ? 'desc' : 'asc';
             } else {
@@ -84,6 +87,27 @@ export default {
 
             this.getResults();
         },
+        delete_post(post_id) {
+            this.$swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    axios.delete('/api/posts/' + post_id)
+                        .then(response => {
+                            this.$swal('Post deleted successfully');
+                            this.getResults();
+                        }).catch(error => {
+                        this.$swal({ icon: 'error', title: 'Error happened'});
+                    });
+                }
+            })
+        }
     }
 };
 </script>
