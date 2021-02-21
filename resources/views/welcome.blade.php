@@ -7,10 +7,15 @@
         <title>Laravel</title>
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <style>
+            .active-menu {
+                font-weight: bold;
+            }
+        </style>
     </head>
     <body>
     <div id="app">
-        <posts-index></posts-index>
+        <app></app>
     </div>
 
     <script src="{{mix('js/app.js')}}"></script>
